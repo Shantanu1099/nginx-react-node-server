@@ -1,0 +1,35 @@
+version: '1.0'
+
+services:
+  
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: 'frontend'
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+    volumes:
+      - ../frontend:/usr/src/app
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: 'backend'
+    ports:
+      - 5000:5000
+    volumes:
+      - ../backend:/usr/src/app
+
+  nginx:
+    restart: always
+    build:
+      context: ../gateway
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - /nginx-react-node-server/logs:/var/log/nginx
